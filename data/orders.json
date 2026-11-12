@@ -1,0 +1,18 @@
+{
+  "customers": {
+    "anna.lindqvist@example.com": {"name": "Anna Lindqvist", "tier": "gold", "country": "SE", "orders": ["A-1001", "A-1002"]},
+    "mark.jensen@example.com": {"name": "Mark Jensen", "tier": "standard", "country": "DK", "orders": ["A-1003"]},
+    "sofia.rossi@example.com": {"name": "Sofia Rossi", "tier": "standard", "country": "IT", "orders": ["A-1004", "A-1005"]},
+    "john.smith@example.com": {"name": "John Smith", "tier": "standard", "country": "GB", "orders": ["A-1006"]},
+    "lea.martin@example.com": {"name": "Léa Martin", "tier": "gold", "country": "FR", "orders": ["A-1007"]}
+  },
+  "orders": {
+    "A-1001": {"item": "Noise-cancelling headphones", "price": 189.0, "status": "delivered", "ordered": "2026-10-02", "delivered": "2026-10-06", "carrier": "PostNord"},
+    "A-1002": {"item": "USB-C cable 2m", "price": 14.9, "status": "delivered", "ordered": "2026-10-20", "delivered": "2026-10-24", "carrier": "PostNord"},
+    "A-1003": {"item": "Smart speaker", "price": 79.0, "status": "in_transit", "ordered": "2026-10-25", "delivered": null, "carrier": "DHL", "expected": "2026-10-30"},
+    "A-1004": {"item": "Fitness tracker", "price": 129.0, "status": "delivered", "ordered": "2026-09-10", "delivered": "2026-09-15", "carrier": "GLS"},
+    "A-1005": {"item": "Phone case", "price": 19.0, "status": "shipped", "ordered": "2026-11-08", "delivered": null, "carrier": "GLS", "expected": "2026-11-13"},
+    "A-1006": {"item": "Wireless charger", "price": 39.0, "status": "delivered", "ordered": "2026-10-28", "delivered": "2026-11-03", "carrier": "RoyalMail"},
+    "A-1007": {"item": "Annual subscription Pro", "price": 99.0, "status": "active", "ordered": "2026-11-01", "delivered": null, "carrier": null, "note": "Two charges of 99.00 EUR found on 2026-11-01 and 2026-11-02"}
+  }
+}

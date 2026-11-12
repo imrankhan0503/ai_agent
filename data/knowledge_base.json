@@ -1,0 +1,62 @@
+[
+  {
+    "id": "KB-001",
+    "title": "Refund policy",
+    "tags": ["refund", "money back", "return", "billing"],
+    "text": "Customers may return unused products within 30 days of delivery for a full refund. Refunds up to 100 EUR can be approved by support automatically. Refunds above 100 EUR require human approval. Digital goods are refundable within 14 days if not downloaded. Refunds are paid to the original payment method within 5-7 business days."
+  },
+  {
+    "id": "KB-002",
+    "title": "Damaged or defective items",
+    "tags": ["damaged", "broken", "defective", "faulty", "not working"],
+    "text": "If an item arrives damaged or defective, the customer can choose a free replacement or a full refund. A photo of the damage is requested for orders above 100 EUR. Return shipping is always free for damaged or defective items. Report must be made within 60 days of delivery."
+  },
+  {
+    "id": "KB-003",
+    "title": "Shipping times and delivery delays",
+    "tags": ["shipping", "delivery", "late", "delayed", "tracking", "where is my order"],
+    "text": "Standard shipping takes 3-5 business days within the EU, express takes 1-2 business days. If an order is more than 7 days late, the customer is entitled to a 10 percent goodwill voucher. If an order is more than 14 days late and not delivered, we open a carrier investigation and offer a refund or reshipment. Tracking links are sent by email when the order ships."
+  },
+  {
+    "id": "KB-004",
+    "title": "Password reset and account access",
+    "tags": ["password", "login", "account", "locked", "access", "2fa"],
+    "text": "Customers can reset their password via the 'Forgot password' link on the login page; the reset email is valid for 60 minutes. Accounts are locked after 5 failed attempts and unlock automatically after 30 minutes. Support never asks for a password. Two-factor authentication resets require identity verification via the registered email and the last four digits of the payment card."
+  },
+  {
+    "id": "KB-005",
+    "title": "Cancelling an order",
+    "tags": ["cancel", "cancellation", "change order", "modify"],
+    "text": "Orders can be cancelled free of charge until they are marked 'shipped'. After shipment the customer must use the standard return process. Cancellation refunds follow the refund policy timing."
+  },
+  {
+    "id": "KB-006",
+    "title": "Subscription billing and double charges",
+    "tags": ["subscription", "charged twice", "double charge", "billing", "invoice", "cancel subscription"],
+    "text": "Subscriptions renew automatically and can be cancelled at any time in Account > Subscriptions; cancellation takes effect at the end of the paid period. If a customer was charged twice for the same period, the duplicate charge is refunded in full regardless of amount after verification of the two transactions by a human agent."
+  },
+  {
+    "id": "KB-007",
+    "title": "Warranty and technical support",
+    "tags": ["warranty", "technical", "setup", "firmware", "bluetooth", "reset", "not turning on"],
+    "text": "All hardware has a 24 month warranty. First-line troubleshooting: hold the power button for 10 seconds for a hard reset, update firmware via the companion app, and re-pair Bluetooth devices after removing them from the phone's Bluetooth list. If the problem persists, offer a warranty replacement."
+  },
+  {
+    "id": "KB-008",
+    "title": "Data privacy and GDPR requests",
+    "tags": ["gdpr", "privacy", "delete my data", "personal data", "data export"],
+    "text": "GDPR requests (access, export, deletion) must be forwarded to the Data Protection Officer at once and answered within 30 days. Support must not delete or export data itself. These tickets are always escalated to a human."
+  },
+  {
+    "id": "KB-009",
+    "title": "Compensation and goodwill rules",
+    "tags": ["compensation", "goodwill", "voucher", "apology", "angry"],
+    "text": "Support may offer a goodwill voucher of up to 15 EUR for confirmed service failures. Gold-tier customers may receive up to 25 EUR. Any compensation above these limits needs a team lead. Never promise compensation that is not listed in policy."
+  },
+  {
+    "id": "KB-010",
+    "title": "Legal threats and safety incidents",
+    "tags": ["lawyer", "sue", "legal", "court", "injury", "fire", "overheating", "safety"],
+    "text": "Tickets that mention lawyers, legal action, authorities, injuries, fire or overheating batteries must be escalated to a human immediately, without making any admission of liability in the reply."
+  }
+]
