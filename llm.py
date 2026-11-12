@@ -43,6 +43,25 @@ def make_client():
     return Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
 
+def _status(e):
+    code = getattr(e, "status_code", None)
+    if code is None and "429" in str(e):
+        return 429
+    return code
+
+
+def _explain(e):
+    """Error text including the provider's response body, which the SDK often leaves out."""
+    body = ""
+    resp = getattr(e, "response", None)
+    if resp is not None:
+        try:
+            body = resp.text[:600]
+        except Exception:
+            pass
+    return f"{e} | model={model_name()} | {body}".strip()
+
+
 class OpenAICompatClient:
     """Exposes client.messages.create(...) in Anthropic style on top of an OpenAI-compatible chat API."""
 
@@ -75,6 +94,15 @@ class OpenAICompatClient:
                 out.append(msg)
         return out
 
+    def _call(self, kwargs):
+        for attempt in range(5):  # free tiers rate-limit: back off and retry
+            try:
+                return self._client.chat.completions.create(**kwargs)
+            except Exception as e:
+                if attempt == 4 or _status(e) != 429:
+                    raise
+                time.sleep(5 * (attempt + 1))
+
     def _create(self, model, max_tokens, system, tools, messages):
         oai_tools = [
             {"type": "function", "function": {"name": t["name"], "description": t["description"],
@@ -83,14 +111,18 @@ class OpenAICompatClient:
         ]
         kwargs = dict(model=model, messages=self._convert_messages(system, messages), tools=oai_tools,
                       tool_choice="required", max_tokens=max_tokens)
-        for attempt in range(5):  # free tiers rate-limit: back off and retry
-            try:
-                resp = self._client.chat.completions.create(**kwargs)
-                break
-            except Exception as e:
-                if attempt == 4 or "429" not in str(e) and "rate" not in str(e).lower():
-                    raise
-                time.sleep(5 * (attempt + 1))
+        try:
+            resp = self._call(kwargs)
+        except Exception as e:
+            # Some providers reject tool_choice="required" (400): retry once with "auto".
+            if _status(e) == 400 and kwargs.get("tool_choice") == "required":
+                kwargs["tool_choice"] = "auto"
+                try:
+                    resp = self._call(kwargs)
+                except Exception as e2:
+                    raise RuntimeError(_explain(e2)) from e2
+            else:
+                raise RuntimeError(_explain(e)) from e
         msg = resp.choices[0].message
         blocks = []
         if msg.content:
