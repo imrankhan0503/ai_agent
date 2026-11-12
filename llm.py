@@ -15,6 +15,7 @@ import time
 from types import SimpleNamespace as NS
 
 DEFAULT_ANTHROPIC_MODEL = "claude-sonnet-5-5"
+RETRY_CODES = (429, 500, 502, 503, 504)  # rate limit or temporary provider overload
 
 
 def provider():
@@ -83,11 +84,16 @@ class OpenAICompatClient:
                         out.append({"role": "tool", "tool_call_id": r["tool_use_id"], "content": r["content"]})
             else:
                 text = "".join(b.text for b in content if b.type == "text")
-                calls = [
-                    {"id": b.id, "type": "function",
-                     "function": {"name": b.name, "arguments": json.dumps(b.input, ensure_ascii=False)}}
-                    for b in content if b.type == "tool_use"
-                ]
+                calls = []
+                for b in content:
+                    if b.type != "tool_use":
+                        continue
+                    call = {"id": b.id, "type": "function",
+                            "function": {"name": b.name, "arguments": json.dumps(b.input, ensure_ascii=False)}}
+                    extra = getattr(b, "extra_content", None)  # Gemini 3 'thought_signature' must be echoed back
+                    if extra:
+                        call["extra_content"] = extra
+                    calls.append(call)
                 msg = {"role": "assistant", "content": text or None}
                 if calls:
                     msg["tool_calls"] = calls
@@ -99,9 +105,9 @@ class OpenAICompatClient:
             try:
                 return self._client.chat.completions.create(**kwargs)
             except Exception as e:
-                if attempt == 4 or _status(e) != 429:
+                if attempt == 4 or _status(e) not in RETRY_CODES:
                     raise
-                time.sleep(5 * (attempt + 1))
+                time.sleep(8 * (attempt + 1))
 
     def _create(self, model, max_tokens, system, tools, messages):
         oai_tools = [
@@ -132,7 +138,10 @@ class OpenAICompatClient:
                 args = json.loads(tc.function.arguments or "{}")
             except json.JSONDecodeError:
                 args = {}
-            blocks.append(NS(type="tool_use", id=tc.id, name=tc.function.name, input=args))
+            extra = getattr(tc, "extra_content", None)
+            if extra is None:
+                extra = (getattr(tc, "model_extra", None) or {}).get("extra_content")
+            blocks.append(NS(type="tool_use", id=tc.id, name=tc.function.name, input=args, extra_content=extra))
         u = getattr(resp, "usage", None)
         usage = NS(input_tokens=getattr(u, "prompt_tokens", 0) or 0, output_tokens=getattr(u, "completion_tokens", 0) or 0)
         return NS(content=blocks, usage=usage)
